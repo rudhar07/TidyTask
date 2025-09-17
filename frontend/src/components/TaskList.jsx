@@ -58,10 +58,27 @@ const TaskList = ({ tasks, onDelete, onEdit, onToggle }) => {
         <Box
           key={task._id}
           p={4}
-          borderWidth={1}
-          borderRadius="md"
-          boxShadow="sm"
-          bgColor={task.isDone ? 'gray.50' : 'white'}
+          borderRadius="lg"
+          boxShadow="md"
+          bg={task.isDone ? 'gray.50' : 'white'}
+          _hover={{
+            transform: 'translateY(-2px)',
+            boxShadow: 'lg',
+          }}
+          transition="all 0.2s"
+          position="relative"
+          _before={{
+            content: '""',
+            position: "absolute",
+            top: "0",
+            left: "0",
+            bottom: "0",
+            width: "4px",
+            bgGradient: task.isDone 
+              ? "linear(to-b, green.400, green.500)"
+              : "linear(to-b, blue.400, purple.500)",
+            borderLeftRadius: "lg",
+          }}
         >
           <HStack justify="space-between">
             <HStack>

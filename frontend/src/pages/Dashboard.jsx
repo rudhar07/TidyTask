@@ -6,6 +6,7 @@ import {
   Heading,
   HStack,
   Select,
+  Text,
   useDisclosure,
   useToast,
   VStack,
@@ -138,62 +139,116 @@ const Dashboard = () => {
   };
 
   return (
-    <Container maxW="container.lg" py={8}>
-      <VStack spacing={8}>
-        <HStack width="100%" justify="space-between">
-          <Heading>My Tasks</Heading>
-          <Button onClick={handleLogout} colorScheme="red" variant="outline">
-            Logout
-          </Button>
-        </HStack>
-
-        <HStack width="100%" justify="space-between">
-          <Select
-            placeholder="Filter by category"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            maxW="200px"
+    <Box minH="100vh" bg="gray.50" py={8}>
+      <Container maxW="container.lg">
+        <VStack spacing={8}>
+          <Box
+            w="100%"
+            p={6}
+            borderRadius="xl"
+            bg="white"
+            boxShadow="md"
+            bgGradient="linear(to-r, blue.50, purple.50)"
           >
-            <option value="">All Categories</option>
-            <option value="personal">Personal</option>
-            <option value="work">Work</option>
-            <option value="shopping">Shopping</option>
-            <option value="health">Health</option>
-            <option value="other">Other</option>
-          </Select>
+            <HStack width="100%" justify="space-between" align="center">
+              <VStack align="start" spacing={1}>
+                <Heading
+                  bgGradient="linear(to-r, blue.400, purple.500)"
+                  bgClip="text"
+                  fontSize={{ base: "2xl", md: "3xl" }}
+                >
+                  My Tasks
+                </Heading>
+                <Text color="gray.600">Organize your day efficiently</Text>
+              </VStack>
+              <Button
+                onClick={handleLogout}
+                colorScheme="red"
+                variant="outline"
+                _hover={{
+                  bg: "red.50"
+                }}
+                size="md"
+              >
+                Logout
+              </Button>
+            </HStack>
+          </Box>
 
-          <Button
-            leftIcon={<AddIcon />}
-            colorScheme="blue"
-            onClick={() => {
+          <HStack
+            width="100%"
+            justify="space-between"
+            bg="white"
+            p={4}
+            borderRadius="lg"
+            boxShadow="sm"
+          >
+            <Select
+              placeholder="Filter by category"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              maxW="200px"
+              bg="white"
+              borderColor="gray.300"
+              _hover={{
+                borderColor: "blue.400"
+              }}
+            >
+              <option value="">All Categories</option>
+              <option value="personal">Personal</option>
+              <option value="work">Work</option>
+              <option value="shopping">Shopping</option>
+              <option value="health">Health</option>
+              <option value="other">Other</option>
+            </Select>
+
+            <Button
+              leftIcon={<AddIcon />}
+              colorScheme="blue"
+              onClick={() => {
+                setSelectedTask(null);
+                onOpen();
+              }}
+              bgGradient="linear(to-r, blue.400, purple.500)"
+              _hover={{
+                bgGradient: "linear(to-r, blue.500, purple.600)"
+              }}
+              _active={{
+                bgGradient: "linear(to-r, blue.600, purple.700)"
+              }}
+            >
+              Add Task
+            </Button>
+          </HStack>
+
+          <Box
+            width="100%"
+            bg="white"
+            p={6}
+            borderRadius="xl"
+            boxShadow="sm"
+            minH="400px"
+          >
+            <TaskList
+              tasks={tasks}
+              onDelete={handleDeleteTask}
+              onEdit={handleEditTask}
+              onToggle={handleToggleTask}
+            />
+          </Box>
+
+          <TaskForm
+            isOpen={isOpen}
+            onClose={() => {
+              onClose();
               setSelectedTask(null);
-              onOpen();
             }}
-          >
-            Add Task
-          </Button>
-        </HStack>
-
-        <Box width="100%">
-          <TaskList
-            tasks={tasks}
-            onDelete={handleDeleteTask}
-            onEdit={handleEditTask}
-            onToggle={handleToggleTask}
+            onSubmit={selectedTask ? handleUpdateTask : handleCreateTask}
+            initialData={selectedTask}
           />
-        </Box>
-
-        <TaskForm
-          isOpen={isOpen}
-          onClose={() => {
-            onClose();
-            setSelectedTask(null);
-          }}
-          onSubmit={selectedTask ? handleUpdateTask : handleCreateTask}
-          initialData={selectedTask}
-        />
-      </VStack>
-    </Container>
+        </VStack>
+      </Container>
+    </Box>
   );
 };
 
